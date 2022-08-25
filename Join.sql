@@ -14,3 +14,24 @@ WHERE s.score = d.score
 GROUP BY h.hacker_id, h.name
 HAVING count(h.hacker_id) > 1
 ORDER BY count(h.hacker_id) DESC, h.hacker_id ASC
+
+SELECT Challenges.hacker_id, Hackers.name, COUNT(Challenges.challenge_id) AS challenges
+FROM Hackers
+JOIN Challenges on Hackers.hacker_id = Challenges.hacker_id
+GROUP BY 1, 2
+HAVING 
+    -- count maximum number of challenges created
+    challenges IN 
+    (SELECT MAX(chal_count) FROM
+    (SELECT COUNT(challenge_id) AS chal_count FROM Challenges
+    GROUP BY hacker_id) AS t3)
+
+    OR 
+    -- One student created the same number of challenges 
+    challenges IN
+    (SELECT chal_count FROM
+    (SELECT COUNT(challenge_id) AS chal_count FROM Challenges
+    GROUP BY hacker_id) AS t4 
+    GROUP BY 1 HAVING COUNT(chal_count) = 1)
+
+ORDER BY 3 DESC, 1;
