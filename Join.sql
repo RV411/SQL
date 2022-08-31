@@ -35,3 +35,13 @@ HAVING
     GROUP BY 1 HAVING COUNT(chal_count) = 1)
 
 ORDER BY 3 DESC, 1;
+
+
+SELECT concat(name,"(",LEFT(Occupation,1),")")
+FROM OCCUPATIONS
+ORDER BY name;
+
+SELECT concat("There are a total of ", COUNT(Occupation)," ",LOWER(Occupation), "s.")
+FROM OCCUPATIONS
+GROUP BY Occupation
+ORDER BY COUNT(Occupation), Occupation;
